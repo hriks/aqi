@@ -2,6 +2,11 @@
 
 This project(AQI) was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## ABOUT
+This Project was meant to track AQI(Air Quality Index) for top cities in :india: using Websocket provided by [Proximity Labs](https://www.proximity.tech/)
+
+Hosted over [API](https://hrik-aqi.herokuapp.com)
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -22,7 +27,6 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 ### Built With
 
@@ -50,7 +54,7 @@ This is an example of how to list things you need to use the software and how to
 <!-- CONTACT -->
 ## Contact
 
-Amit Kumar Gupta - [@hriks](https://github/hriks) - hriksss@gmail.com
+Amit Kumar Gupta [:octocat:](https://github/hriks) [:email:](mailto:hriksss@gmail.com)
 
-Project Link: [https://github.com/hriks/aaqi](https://github.com/hriks/aqi)
+Project Link: [AQI](https://github.com/hriks/aqi)
 
