@@ -1,7 +1,5 @@
 import React from "react";
 
-import Header from './Header'
-
 import {
     Container,
     Row,
@@ -13,6 +11,8 @@ import {
     ModalHeader,
     ModalBody
 } from "reactstrap";
+
+import Header from './Header'
 
 import '../assets/App.css';
 
@@ -29,7 +29,8 @@ export default class App extends React.Component {
             historicalData: {},
             ws: null,
             isOpen: false,
-            search: ''
+            search: '',
+            searched_city: null
         };
     }
 
@@ -65,28 +66,24 @@ export default class App extends React.Component {
 
             const live_data = JSON.parse(e.data)
 
-            var {data, historicalData} = this.state;
+            var {data} = this.state;
 
             live_data.forEach((liveObj, index) => {
                 let row = data.filter(obj => obj.city === liveObj.city)[0]
-
-                let historicalObj = {time: new Date(), aqi: liveObj.aqi}
 
                 liveObj.updatedAt = new Date()
 
                 if (row) {
                     row.aqi = liveObj.aqi
                     row.updatedAt = liveObj.updatedAt
-                    historicalData[liveObj.city].push(historicalObj)
                 } else {
                     data.push(liveObj)
-                    historicalData[liveObj.city] = [historicalObj]
                 }
             })
 
             data.sort((a, b) => b.aqi - a.aqi);
 
-            this.setState({data, historicalData})
+            this.setState({data})
         };
 
         // websocket onclose event listener
@@ -182,14 +179,14 @@ export default class App extends React.Component {
 
     render() {
 
-        const {data, historicalData, isOpen} = this.state;
+        const {data, isOpen} = this.state;
 
         return (
             <>
                 <Header/>
                 <Container fluid className="mt-3 p-4">
                     <Row>
-                        <Col sm={7}>
+                        <Col >
                             <Card>
                                 <CardHeader className="border-0">
                                     <Row className="align-items-center">
@@ -208,8 +205,13 @@ export default class App extends React.Component {
                                     </thead>
                                     <tbody>
                                         {data.map((obj, index) => <tr className={this.getClassName(obj.aqi)} key={`city-${index}`}>
-                                            <th scope="row">{obj.city}</th>
-                                            <td>{obj.aqi.toFixed(2)}</td>
+                                            <th scope="row">
+                                                <i className="fas fa-city"></i> &nbsp;
+                                                {obj.city}
+                                            </th>
+                                            <td>
+                                                {obj.aqi.toFixed(2)}
+                                            </td>
                                             <td>{this.getUpdatedAt(obj)}</td>
                                         </tr>)}
                                     </tbody>
@@ -217,15 +219,13 @@ export default class App extends React.Component {
                                         <tr>
                                             <td colSpan={3}>
                                                 <small className="text-muted float-right color-info" onClick={() => this.setState({isOpen: !isOpen})}>
-                                                    know about color band
+                                                    *know about color band
                                                 </small>
                                             </td>
                                         </tr>
                                     </tfoot>
                                 </Table>
                             </Card>
-                        </Col>
-                        <Col sm={5}>
                         </Col>
                     </Row>
                     <Modal
