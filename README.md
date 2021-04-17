@@ -5,7 +5,7 @@ This project(AQI) was bootstrapped with [Create React App](https://github.com/fa
 ## ABOUT
 This Project was meant to track AQI(Air Quality Index) for top cities in :india: using Websocket provided by [Proximity Labs](https://www.proximity.tech/)
 
-Hosted over [API](https://hrik-aqi.herokuapp.com)
+Hosted over [Heroku](https://hrik-aqi.herokuapp.com)
 
 ## Available Scripts
 
