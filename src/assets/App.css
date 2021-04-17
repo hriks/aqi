@@ -1,0 +1,61 @@
+.bg-gradient-info {
+    background: #383639 !important;
+}
+
+.nav-text, .primary-text {
+    color: #f6edce !important;
+}
+
+.navbar-top {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    background-color: transparent;
+    min-height: 4rem;
+    font-size: 1.5rem;
+}
+
+.card-header {
+    padding: 1.25rem 1.5rem !important;
+    background-color: #fff !important;
+    border-bottom: 1px solid rgba(0,0,0,.05);
+}
+
+thead {
+    text-transform: uppercase;
+}
+
+.good {
+    background: #54a94f;
+}
+
+.satisfactory {
+    background: #a3c853;
+}
+
+.moderate {
+    background: #fff832;
+    color: black !important;
+}
+
+.poor {
+    background: #f39c32;
+}
+
+.very-poor {
+    background: #e93f33;
+}
+
+.severe {
+    background: #af2d24;
+}
+
+.color-info {
+    cursor: pointer;
+}
+
+img {
+    width: 100%;
+}

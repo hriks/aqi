@@ -1,0 +1,29 @@
+@font-face {
+    font-family: "CarnabyStreet-Clean";
+    src: url("https://cdn.shopify.com/s/files/1/0385/4378/6123/files/CarnabyStreet-Clean.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "CarnabyStreet-Blowout";
+    src: url("https://cdn.shopify.com/s/files/1/0385/4378/6123/files/CarnabyStreet-Blowout.otf?v=1614607185") format("opentype");
+}
+@font-face {
+    font-family: "WorchesterTS-Regular";
+    src: url("https://cdn.shopify.com/s/files/1/0385/4378/6123/files/TypeShop_Collection_-_WorchesterTS-Regular.otf") format("opentype");
+
+}
+
+body {
+  	margin: 0;
+  	font-family: "CarnabyStreet-Clean";
+  	-webkit-font-smoothing: antialiased;
+  	-moz-osx-font-smoothing: grayscale;
+  	line-height: 1.5;
+  	background-color: #f8f9fe;
+  	font-size: 1rem;
+}
+
+code {
+  	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    	monospace;
+}
