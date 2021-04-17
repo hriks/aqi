@@ -61,3 +61,22 @@ thead {
 img {
     width: 100%;
 }
+
+tbody tr {
+    cursor: pointer;
+}
+
+.live-badge {
+    padding: 7px;
+    background-color: #31a24c;
+    content: " ";
+    display: inline-block;
+    border-radius: 50%;
+    position: relative;
+    top: -2px;
+    margin-right: 10px;
+}
+
+.text-sm {
+    font-size: 14px;
+}

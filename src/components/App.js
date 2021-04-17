@@ -9,10 +9,16 @@ import {
     Table,
     Modal,
     ModalHeader,
-    ModalBody
+    ModalBody,
+    FormGroup,
+    Input,
+    InputGroup,
+    InputGroupAddon,
+    InputGroupText
 } from "reactstrap";
 
 import Header from './Header'
+import Chart from './Chart'
 
 import '../assets/App.css';
 
@@ -28,9 +34,9 @@ export default class App extends React.Component {
             data: [],
             historicalData: {},
             ws: null,
-            isOpen: false,
+            toogleHelpModal: false,
             search: '',
-            searched_city: null
+            selectedCity: null
         };
     }
 
@@ -66,24 +72,28 @@ export default class App extends React.Component {
 
             const live_data = JSON.parse(e.data)
 
-            var {data} = this.state;
+            var {data, historicalData } = this.state;
 
+            const currentTime = new Date()
             live_data.forEach((liveObj, index) => {
                 let row = data.filter(obj => obj.city === liveObj.city)[0]
 
-                liveObj.updatedAt = new Date()
+                liveObj.updatedAt = currentTime
 
+                let historicalObj = {time: liveObj.updatedAt, aqi: liveObj.aqi}
                 if (row) {
                     row.aqi = liveObj.aqi
                     row.updatedAt = liveObj.updatedAt
                 } else {
                     data.push(liveObj)
+                    historicalData[liveObj.city] = []
                 }
+                historicalData[liveObj.city].push(historicalObj)
             })
 
             data.sort((a, b) => b.aqi - a.aqi);
 
-            this.setState({data})
+            this.setState({data, historicalData})
         };
 
         // websocket onclose event listener
@@ -179,19 +189,56 @@ export default class App extends React.Component {
 
     render() {
 
-        const {data, isOpen} = this.state;
+        const { toogleHelpModal, selectedCity, search, historicalData} = this.state;
+
+        let {data} = this.state;
+        if (search) {
+            data = data.filter(obj => obj.city.toLowerCase().includes(search.toLowerCase()))
+        }
+
+        var chart;
+        if (selectedCity) {
+            chart = <Chart
+                selectedCity={selectedCity}
+                historicalData={historicalData}
+                setState={this.setState.bind(this)}
+                getClassName={this.getClassName.bind(this)} />
+        }
 
         return (
             <>
                 <Header/>
                 <Container fluid className="mt-3 p-4">
+                    {chart}
                     <Row>
-                        <Col >
+                        <Col>
                             <Card>
                                 <CardHeader className="border-0">
                                     <Row className="align-items-center">
                                         <div className="col-8">
-                                            <h3 className="mb-0">Top Cities AQI</h3>
+                                            <h3 className="mb-0">
+                                                <span className="live-badge"></span>
+                                                Live
+                                            </h3>
+                                        </div>
+                                        <div className="text-right col-4 search-input-container">
+                                            <FormGroup className="mb-0">
+                                                <InputGroup className="input-group-alternative">
+                                                    <InputGroupAddon addonType="prepend">
+                                                        <InputGroupText>
+                                                            <i className="fa fa-search" />
+                                                        </InputGroupText>
+                                                    </InputGroupAddon>
+                                                    <Input
+                                                        className="form-control-alternative"
+                                                        placeholder="Search City"
+                                                        type="text"
+                                                        name="search"
+                                                        value={search}
+                                                        onChange={ e=> this.setState({search: e.target.value})}
+                                                    />
+                                                </InputGroup>
+                                            </FormGroup>
                                         </div>
                                     </Row>
                                 </CardHeader>
@@ -204,7 +251,10 @@ export default class App extends React.Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {data.map((obj, index) => <tr className={this.getClassName(obj.aqi)} key={`city-${index}`}>
+                                        {data.map((obj, index) => <tr 
+                                            className={this.getClassName(obj.aqi)} key={`city-${index}`}
+                                            onClick={ () => this.setState({selectedCity: obj.city})}
+                                        >
                                             <th scope="row">
                                                 <i className="fas fa-city"></i> &nbsp;
                                                 {obj.city}
@@ -214,11 +264,19 @@ export default class App extends React.Component {
                                             </td>
                                             <td>{this.getUpdatedAt(obj)}</td>
                                         </tr>)}
+                                        {data.length === 0 ? 
+                                            <tr>
+                                                <td colSpan={3} className="p-4 text-center">
+                                                    No data available for "{search}"
+                                                </td>
+                                            </tr>
+                                            : null
+                                        }
                                     </tbody>
                                     <tfoot>
                                         <tr>
                                             <td colSpan={3}>
-                                                <small className="text-muted float-right color-info" onClick={() => this.setState({isOpen: !isOpen})}>
+                                                <small className="text-muted float-right color-info" onClick={() => this.setState({toogleHelpModal: !toogleHelpModal})}>
                                                     *know about color band
                                                 </small>
                                             </td>
@@ -229,12 +287,12 @@ export default class App extends React.Component {
                         </Col>
                     </Row>
                     <Modal
-                        isOpen={isOpen}
-                        toggle={()=>this.setState({isOpen: !isOpen})}
+                        isOpen={toogleHelpModal}
+                        toggle={()=>this.setState({toogleHelpModal: !toogleHelpModal})}
                         className='modal-dialog-centered'
                         size="lg"
                     >
-                        <ModalHeader toggle={()=>this.setState({isOpen: !isOpen})}>
+                        <ModalHeader toggle={()=>this.setState({toogleHelpModal: !toogleHelpModal})}>
                             Guide to AQI ( Air Quality Index)
                         </ModalHeader>
                         <ModalBody>
